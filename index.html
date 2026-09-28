@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>和林HS01009L尺寸外观检测项目 - 数字化工单实施进度看板</title>
+  
+  <script>
+    // 确保在任何网络环境下均安全初始化 Tailwind
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#0b2e4f',
+              950: '#081d33',
+            }
+          },
+          boxShadow: {
+            'card-subtle': '0 4px 20px -2px rgba(11, 46, 79, 0.06), 0 2px 6px -1px rgba(11, 46, 79, 0.04)',
+            'card-hover': '0 12px 30px -4px rgba(11, 46, 79, 0.12), 0 4px 10px -2px rgba(11, 46, 79, 0.06)',
+            'glow-cyan': '0 0 16px -2px rgba(6, 182, 212, 0.4)',
+            'glow-blue': '0 0 16px -2px rgba(14, 165, 233, 0.3)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* 清爽背景：不再全屏深蓝大面积填充，改为优雅的淡雅科技浅灰微蓝 + 极轻微数字化网格点阵 */
+    body {
+      background-color: #f4f7fb;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.08) 0%, transparent 60%),
+        radial-gradient(rgba(11, 46, 79, 0.06) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px;
+      background-attachment: fixed;
+    }
+
+    /* 科技蓝标题与表头专属光效质感 */
+    .cyber-header-bg {
+      background: linear-gradient(135deg, #06152d 0%, #0c2b55 45%, #081a38 100%);
+      box-shadow: 0 4px 20px -2px rgba(6, 182, 212, 0.15), inset 0 1px 0 0 rgba(56, 189, 248, 0.25);
+    }
+
+    .cyber-title-gradient {
+      background: linear-gradient(90deg, #ffffff 0%, #a5f3fc 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    }
+
+    .th-cyber-base {
+      background: linear-gradient(180deg, #091e3e 0%, #06152d 100%);
+      border-color: rgba(56, 189, 248, 0.2);
+    }
+
+    .th-cyber-baseline {
+      background: linear-gradient(180deg, #0c2d59 0%, #081f3f 100%);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .th-cyber-actual {
+      background: linear-gradient(180deg, #132f54 0%, #0a1f3c 100%);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .th-cyber-sub {
+      background: linear-gradient(180deg, #0e2748 0%, #091b35 100%);
+      border-color: rgba(56, 189, 248, 0.15);
+    }
+
+    /* 极致紧凑无横滚表格排版 */
+    table {
+      table-layout: fixed;
+    }
+
+    /* 日期选择器：在浅色与卡片中清晰易读 */
+    input[type="date"] {
+      color-scheme: light;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.65;
+      transition: opacity 0.2s ease;
+      padding: 0;
+      margin: 0;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
+    }
+
+    .compact-date-input {
+      padding: 2px 2px;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+  <!-- 顶部导航条：采用精致的数字化深蓝点睛设计，保留科技专业感 -->
+  <header class="sticky top-0 z-40 cyber-header-bg text-white shadow-xl border-b border-cyan-500/30">
+    <div class="w-full px-3 sm:px-6 py-2.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5">
+      
+      <!-- 项目标识与重命名区 -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 border border-cyan-300/60 flex items-center justify-center shadow-glow-cyan shrink-0">
+          <i class="fa-solid fa-microchip text-white text-base"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <button id="btnOpenTitleModal" type="button" title="点击修改项目标题" class="group flex items-center gap-2 text-left focus:outline-none">
+              <h1 id="projectTitleDisplay" class="text-base sm:text-lg font-black tracking-tight cyber-title-gradient group-hover:brightness-110 transition-all flex items-center gap-2">
+                和林HS01009L尺寸外观检测项目
+              </h1>
+              <span class="opacity-80 group-hover:opacity-100 text-xs text-cyan-300 group-hover:scale-110 transition-all p-1 bg-cyan-950/80 border border-cyan-500/40 rounded-md shadow-xs">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </span>
+            </button>
+            <span class="text-[10px] uppercase font-black tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-950/90 text-cyan-300 border border-cyan-400/50 whitespace-nowrap shadow-[0_0_12px_rgba(6,182,212,0.3)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+              <i class="fa-solid fa-shield-halved text-[9px] text-cyan-400"></i> 数字化全景
+            </span>
+          </div>
+          <p class="text-xs text-cyan-200/90 flex items-center gap-1.5 mt-0.5 font-medium tracking-wide">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
+            计划基准 (Baseline) vs 实际执行统计透视 (Actual Telemetry)
+          </p>
+        </div>
+      </div>
+
+      <!-- 右侧控制工具组 -->
+      <div class="flex items-center flex-wrap gap-2">
+        <!-- 云端数据同步状态 -->
+        <div class="flex items-center gap-1.5 bg-cyan-950/70 px-2.5 py-1 rounded-xl border border-cyan-500/30 text-xs text-white backdrop-blur-sm">
+          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
+          <span id="cloudStatusText" class="text-[11px] text-cyan-200 font-medium">云端就绪</span>
+          <button id="btnFetchCloud" onclick="fetchFromCloud(true)" title="从 Google 远程表格强制拉取最新数据" class="ml-1 px-1.5 py-0.5 rounded bg-cyan-900/60 hover:bg-cyan-800 text-cyan-300 text-[11px] font-semibold transition-colors flex items-center gap-1 border border-cyan-500/40">
+            <i id="cloudFetchIcon" class="fa-solid fa-cloud-arrow-down text-[10px]"></i>
+            <span>拉取</span>
+          </button>
+        </div>
+
+        <!-- 基准测算日期选择 -->
+        <div class="flex items-center gap-1.5 bg-cyan-950/70 px-2.5 py-1 rounded-xl border border-cyan-500/30 text-xs text-white backdrop-blur-sm">
+          <span class="text-cyan-200 text-[11px] whitespace-nowrap flex items-center gap-1">
+            <i class="fa-regular fa-calendar-check text-cyan-400"></i> 基准日:
+          </span>
+          <input type="date" id="baseDateInput" class="bg-navy-950 text-cyan-200 border border-cyan-500/40 rounded-lg px-1.5 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono font-bold bg-[#041226]">
+          <button id="btnResetToday" title="重置回今天" class="text-[11px] text-cyan-300 hover:text-white px-1 font-semibold transition-colors">
+            今天
+          </button>
+        </div>
+
+        <!-- 自动联动开关 -->
+        <button id="btnToggleSync" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-900 transition-all shadow-xs">
+          <i id="syncIcon" class="fa-solid fa-arrows-rotate animate-spin text-[10px]"></i>
+          <span id="syncText">日期-进度已联动</span>
+        </button>
+
+        <!-- 导出报表 -->
+        <button id="btnExport" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-white/95 hover:bg-white text-slate-900 border border-cyan-300/40 transition-colors shadow-xs">
+          <i class="fa-solid fa-file-excel text-emerald-600 text-xs"></i>
+          <span>导出报表</span>
+        </button>
+
+        <!-- 重置数据 -->
+        <button id="btnResetData" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-cyan-950/70 hover:bg-rose-950/80 hover:text-rose-300 text-cyan-200 border border-cyan-500/30 transition-colors">
+          <i class="fa-solid fa-arrow-rotate-left text-xs"></i>
+          <span>重置</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="w-full px-2 sm:px-5 py-4 flex-1 space-y-3.5 overflow-x-hidden">
+
+    <!-- KPI 视觉概览仪表盘 (悬浮白底卡片 + 柔和科技阴影，告别厚重背景) -->
+    <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      
+      <!-- 计划总工期 (去重日历跨度计算) -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-cyan-500/50 transition-all relative overflow-hidden group">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">计划总工期</span>
+          <div class="w-8 h-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center border border-cyan-100">
+            <i class="fa-regular fa-calendar-days text-sm"></i>
+          </div>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-slate-900" id="kpiPlanDuration">107 天</div>
+        <div class="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1" id="kpiTotalTasksText">
+          <i class="fa-solid fa-list-check text-cyan-600"></i> 23 项工序
+        </div>
+      </div>
+
+      <!-- 实际累计耗时 -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-indigo-400/60 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">实际累计耗时</span>
+          <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+            <i class="fa-solid fa-business-time text-sm"></i>
+          </div>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-indigo-900" id="kpiActualDuration">0 天</div>
+        <div class="text-xs text-slate-500 font-bold mt-1" id="kpiDurationVariance">尚未启动</div>
+      </div>
+
+      <!-- 进行中工序 -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-sky-400/60 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">进行中工序</span>
+          <div class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100">
+            <i class="fa-solid fa-spinner fa-spin-pulse text-sm"></i>
+          </div>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-sky-600" id="kpiOngoingTasks">0</div>
+        <div class="text-xs text-sky-700 font-bold mt-1 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span> 现场推进中
+        </div>
+      </div>
+
+      <!-- 已完成工序 -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-emerald-400/60 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">已完成工序</span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+            <i class="fa-solid fa-circle-check text-sm"></i>
+          </div>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-emerald-600" id="kpiCompletedTasks">0</div>
+        <div class="text-xs text-emerald-700 font-black mt-1" id="kpiCompletedRate">达成率 0.0%</div>
+      </div>
+
+      <!-- 逾期滞后警告 -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-rose-400/60 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">逾期 / 滞后</span>
+          <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100">
+            <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+          </div>
+        </div>
+        <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-rose-600" id="kpiOverdueTasks">0</div>
+        <div class="text-xs text-rose-600 font-black mt-1">需重点督办</div>
+      </div>
+
+      <!-- 综合进度 -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-card-subtle hover:shadow-card-hover hover:border-amber-400/60 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between text-slate-500 mb-1.5">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">综合实施进度</span>
+          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+            <i class="fa-solid fa-chart-line text-sm"></i>
+          </div>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <div class="text-2xl sm:text-3xl font-black font-mono tracking-tight text-amber-600" id="kpiOverallProgress">0%</div>
+          <span class="text-[10px] font-bold text-slate-400 font-mono">整体加权</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-2 mt-2 overflow-hidden ring-1 ring-slate-200">
+          <div id="kpiProgressBar" class="bg-gradient-to-r from-amber-400 to-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 工具与筛选操作栏 (白色卡片底，视觉干净明亮) -->
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-card-subtle p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5">
+      
+      <!-- 视图切换胶囊 -->
+      <div class="flex items-center p-1 bg-slate-100 rounded-xl gap-1 self-start sm:self-auto border border-slate-200/70">
+        <button id="viewBtnTable" onclick="switchView('table')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-900 text-white shadow-xs transition-all">
+          <i class="fa-solid fa-table-columns text-[11px] text-cyan-300"></i>
+          <span>编辑表格</span>
+        </button>
+        <button id="viewBtnGantt" onclick="switchView('gantt')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-brand-900 hover:bg-slate-200/70 transition-all">
+          <i class="fa-solid fa-chart-gantt text-[11px]"></i>
+          <span>双轨甘特图</span>
+        </button>
+        <button id="viewBtnPivot" onclick="switchView('pivot')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-brand-900 hover:bg-slate-200/70 transition-all">
+          <i class="fa-solid fa-chart-pie text-[11px]"></i>
+          <span>执行透视</span>
+        </button>
+      </div>
+
+      <!-- 搜索、筛选与新增工序操作 -->
+      <div class="flex items-center flex-wrap gap-2">
+        <!-- 分组折叠开关 -->
+        <button id="btnToggleGrouping" onclick="toggleGrouping()" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200/80 text-brand-900 transition-colors border border-slate-200">
+          <i id="groupingIcon" class="fa-solid fa-folder-tree text-brand-600"></i>
+          <span id="groupingText">已按部门分组</span>
+        </button>
+
+        <!-- 所属工序筛选 -->
+        <select id="gongxuFilter" onchange="refreshViews()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-500 font-medium cursor-pointer shadow-xs">
+          <option value="ALL">全部工序部门</option>
+        </select>
+
+        <!-- 状态筛选 -->
+        <select id="statusFilter" onchange="refreshViews()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-slate-50 text-slate-800 focus:outline-none focus:border-brand-500 font-medium cursor-pointer shadow-xs">
+          <option value="ALL">全部状态</option>
+          <option value="进行中">进行中</option>
+          <option value="已完成">已完成</option>
+          <option value="已逾期">已逾期</option>
+          <option value="未开始">未开始</option>
+        </select>
+
+        <!-- 关键词搜索 -->
+        <div class="relative flex-1 sm:flex-initial">
+          <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="searchInput" oninput="refreshViews()" placeholder="搜索项目/模块..." class="pl-7 pr-3 py-1.5 text-xs border border-slate-200 rounded-xl bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 w-full sm:w-44 transition-all shadow-xs">
+        </div>
+
+        <!-- 新增工序按钮 -->
+        <button onclick="openAddTaskModal()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-brand-800 hover:bg-brand-700 text-white shadow-xs transition-all">
+          <i class="fa-solid fa-plus text-[11px] text-cyan-300"></i>
+          <span>新增工序</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 表格视图容器 (白底悬浮卡片 + 优雅蓝灰色表头) -->
+    <div id="tableViewContainer" class="bg-white rounded-2xl border border-slate-200/90 shadow-card-subtle overflow-hidden">
+      
+      <!-- 视觉引导条 -->
+      <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-500 gap-1.5">
+        <div class="flex items-center flex-wrap gap-1.5">
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded font-semibold bg-brand-50 text-brand-800 text-[10px] border border-brand-200">
+            <i class="fa-solid fa-circle-info mr-1 text-brand-600"></i> 数据赛道划分：
+          </span>
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded font-medium bg-sky-50 text-sky-800 border border-sky-200 text-[10px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-500 mr-1"></span>蓝色：计划基准 (Baseline)
+          </span>
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded font-medium bg-amber-50 text-amber-800 border border-amber-200 text-[10px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1"></span>琥珀：实际跟踪 (Actual)
+          </span>
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded font-medium bg-slate-100 text-slate-600 border border-slate-200 text-[10px]">
+            <i class="fa-solid fa-expand mr-1 text-slate-500"></i>全屏自适应 0 横向滚动
+          </span>
+        </div>
+        <div class="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
+          <i class="fa-regular fa-clock text-brand-500"></i>
+          <span>填入实际开始日即激活进度条，填完工日自动达成100%</span>
+        </div>
+      </div>
+
+      <!-- 表格主体 -->
+      <div class="w-full overflow-hidden">
+        <table class="w-full text-left text-xs border-collapse table-fixed">
+          <thead>
+            <!-- 第一级表头 (科技蓝赛博分区分流) -->
+            <tr class="text-white font-black text-center text-[11px] tracking-wide border-b border-cyan-500/30">
+              <th colspan="2" class="py-2.5 px-2 th-cyber-base text-left pl-3 font-black text-xs text-cyan-300 border-r border-cyan-500/20">
+                <i class="fa-solid fa-cube mr-1 text-cyan-400"></i> 工序基础定义
+              </th>
+              <th colspan="3" class="py-2.5 px-1 th-cyber-baseline text-sky-200 font-bold text-xs border-r border-cyan-500/30">
+                <i class="fa-regular fa-calendar mr-1 text-cyan-300"></i> 计划基准 (Baseline)
+              </th>
+              <th colspan="6" class="py-2.5 px-1 th-cyber-actual text-amber-300 font-black text-xs border-r border-cyan-500/20">
+                <i class="fa-solid fa-sliders mr-1 text-amber-400"></i> 实际执行统计与透视 (Actual Tracking)
+              </th>
+              <th class="py-2.5 px-1 th-cyber-base text-cyan-200 font-bold text-xs">
+                操作
+              </th>
+            </tr>
+            <!-- 第二级紧凑列表头 (科技蓝灰微深邃渐变) -->
+            <tr class="text-cyan-100 font-extrabold text-[11px] border-b border-cyan-500/30 divide-x divide-cyan-500/20">
+              <th class="py-2 px-1.5 w-[80px] text-center th-cyber-sub text-cyan-200 font-black">工序/序号</th>
+              <th class="py-2 px-2.5 text-left th-cyber-sub text-cyan-100 font-black">项目分解与细则说明</th>
+              
+              <!-- 计划基准列 -->
+              <th class="py-2 px-1 w-[82px] text-center th-cyber-baseline text-sky-200">计划开始</th>
+              <th class="py-2 px-1 w-[82px] text-center th-cyber-baseline text-sky-200">计划完成</th>
+              <th class="py-2 px-1 w-[46px] text-center th-cyber-baseline text-cyan-300 font-mono font-black">工期</th>
+
+              <!-- 实际跟踪列 -->
+              <th class="py-2 px-1 w-[84px] text-center th-cyber-actual text-amber-200 font-bold">实际开始</th>
+              <th class="py-2 px-1 w-[84px] text-center th-cyber-actual text-amber-200 font-bold">实际完成</th>
+              <th class="py-2 px-1 w-[46px] text-center th-cyber-actual text-cyan-100 font-mono">耗时</th>
+              <th class="py-2 px-1 w-[56px] text-center th-cyber-actual text-amber-200">偏差</th>
+              <th class="py-2 px-1.5 w-[116px] text-center th-cyber-actual text-amber-300 font-bold">实际进度</th>
+              <th class="py-2 px-1 w-[72px] text-center th-cyber-actual text-cyan-200">状态</th>
+
+              <!-- 操作 -->
+              <th class="py-2 px-1 w-[50px] text-center th-cyber-sub text-cyan-300">管理</th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody" class="divide-y divide-slate-200 text-slate-800">
+            <!-- 动态生成数据行 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 空数据状态 -->
+      <div id="tableEmptyState" class="hidden py-16 text-center text-slate-400">
+        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 text-2xl border border-slate-200">
+          <i class="fa-regular fa-folder-open"></i>
+        </div>
+        <p class="text-sm font-semibold text-slate-700">未找到匹配的工序</p>
+        <p class="text-xs text-slate-400 mt-1">您可以尝试清空搜索词，或点击上方“新增工序”添加新任务</p>
+      </div>
+
+    </div>
+
+    <!-- 甘特图视图容器 (白底悬浮卡片) -->
+    <div id="ganttViewContainer" class="hidden bg-white rounded-2xl border border-slate-200/90 shadow-card-subtle p-3.5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2.5 border-b border-slate-200 gap-2.5">
+        <div>
+          <h2 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+            <span class="w-6 h-6 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center border border-brand-100">
+              <i class="fa-solid fa-chart-gantt text-xs"></i>
+            </span>
+            计划基准 (上轨灰蓝线) vs 实际执行 (下轨彩条) 双轨对比甘特图
+          </h2>
+          <p class="text-[11px] text-slate-500 mt-0.5">
+            灰蓝条为基准排期，彩条为当前实际推进，全屏自适应比例分布
+          </p>
+        </div>
+
+        <!-- 图例说明 -->
+        <div class="flex flex-wrap items-center gap-2.5 text-[10px] bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-200">
+          <span class="flex items-center gap-1 text-slate-600">
+            <span class="w-3 h-1.5 rounded bg-slate-400 inline-block"></span> 计划基准
+          </span>
+          <span class="flex items-center gap-1 text-emerald-700">
+            <span class="w-2 h-2 rounded-sm bg-emerald-500 inline-block"></span> 完成
+          </span>
+          <span class="flex items-center gap-1 text-sky-700">
+            <span class="w-2 h-2 rounded-sm bg-sky-500 inline-block"></span> 进行
+          </span>
+          <span class="flex items-center gap-1 text-rose-700">
+            <span class="w-2 h-2 rounded-sm bg-rose-500 inline-block"></span> 滞后
+          </span>
+          <span class="flex items-center gap-1 text-slate-400">
+            <span class="w-2 h-2 rounded-sm bg-slate-200 border border-slate-300 inline-block"></span> 未启
+          </span>
+        </div>
+      </div>
+
+      <!-- 甘特图视窗 -->
+      <div class="mt-3 relative pb-2 w-full overflow-hidden">
+        <div id="ganttChartWrapper" class="w-full relative">
+          <!-- 时间刻度轴 -->
+          <div id="ganttTimeAxis" class="flex border-b border-slate-200 text-[10px] font-semibold text-slate-500 pb-1.5 mb-2.5"></div>
+          <!-- 甘特双轨条容器 -->
+          <div id="ganttBarsContainer" class="space-y-2 relative"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 视图 3：部门工序执行透视分析 -->
+    <div id="pivotViewContainer" class="hidden bg-white rounded-2xl border border-slate-200/90 shadow-card-subtle p-3.5 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+              <i class="fa-solid fa-chart-pie text-xs"></i>
+            </span>
+            部门工序工期偏差透视与执行统计
+          </h2>
+          <p class="text-[11px] text-slate-500 mt-0.5">
+            透视统计各部门的计划总工时、实际累计耗时、工期偏差天数及平均完成达成率
+          </p>
+        </div>
+      </div>
+
+      <!-- 透视分析表格 -->
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-700 font-bold text-[11px] border-b border-slate-200">
+              <th class="py-2.5 px-3">所属工序/部门</th>
+              <th class="py-2.5 px-3 text-center">工序数量</th>
+              <th class="py-2.5 px-3 text-center">计划总工期</th>
+              <th class="py-2.5 px-3 text-center">实际累计耗时</th>
+              <th class="py-2.5 px-3 text-center">工期净偏差</th>
+              <th class="py-2.5 px-3 text-center">平均达成率</th>
+              <th class="py-2.5 px-3 text-center">执行健康状态</th>
+            </tr>
+          </thead>
+          <tbody id="pivotTableBody" class="divide-y divide-slate-200 text-[11px]">
+            <!-- 动态生成透视数据 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 工序新增/编辑弹窗 (Task Modal) -->
+  <div id="taskModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-150">
+      
+      <div class="px-5 py-4 bg-brand-950 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-brand-800 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+            <i id="taskModalIcon" class="fa-solid fa-pen-to-square text-sm"></i>
+          </div>
+          <h3 id="taskModalTitle" class="text-sm font-bold tracking-tight text-white">编辑工序任务</h3>
+        </div>
+        <button onclick="closeTaskModal()" class="text-slate-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="taskForm" onsubmit="handleTaskFormSubmit(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="formTaskId">
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">所属工序 / 部门</label>
+            <input type="text" id="formGongxu" required list="gongxuDatalist" placeholder="如：机构、电控" class="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-xl focus:border-brand-500 focus:outline-none transition-all">
+            <datalist id="gongxuDatalist">
+              <option value="业务"></option>
+              <option value="机构"></option>
+              <option value="电控"></option>
+              <option value="视觉"></option>
+              <option value="采购"></option>
+              <option value="组装"></option>
+              <option value="出货"></option>
+              <option value="现场调试"></option>
+              <option value="量产验证"></option>
+              <option value="提交验收资料"></option>
+              <option value="资料归档/结案"></option>
+            </datalist>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">序号</label>
+            <input type="number" id="formXuhao" min="1" required class="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 text-brand-900 rounded-xl focus:border-brand-500 focus:outline-none transition-all font-mono font-bold">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">项目分解 (任务名)</label>
+          <input type="text" id="formProject" required placeholder="如：3D绘图、设备运行调试" class="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-xl focus:border-brand-500 focus:outline-none transition-all font-semibold">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">作业模块 / 细则说明</label>
+          <textarea id="formModule" rows="2" placeholder="详细说明任务交付物及细则内容..." class="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 text-slate-700 rounded-xl focus:border-brand-500 focus:outline-none transition-all"></textarea>
+        </div>
+
+        <div class="p-3 bg-sky-50/60 rounded-2xl border border-sky-100 space-y-2.5">
+          <span class="text-[10px] font-bold text-sky-800 uppercase tracking-wider block">计划基准排期 (Baseline)</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] text-slate-500 mb-0.5 font-medium">计划开始日期</label>
+              <input type="date" id="formPlanStart" required class="w-full px-2 py-1 text-xs bg-white border border-slate-200 text-slate-800 rounded-lg focus:outline-none focus:border-brand-500 font-mono font-semibold">
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-500 mb-0.5 font-medium">计划完成日期</label>
+              <input type="date" id="formPlanEnd" required class="w-full px-2 py-1 text-xs bg-white border border-slate-200 text-slate-800 rounded-lg focus:outline-none focus:border-brand-500 font-mono font-semibold">
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-2.5">
+          <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">实际执行填报 (Actual - 进度根据工期自动统计)</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] text-amber-900 mb-0.5 font-medium">实际开始日期</label>
+              <input type="date" id="formActualStart" onchange="updateFormProgressPreview()" class="w-full px-2 py-1 text-xs bg-white border border-amber-300 text-slate-900 rounded-lg focus:outline-none focus:border-amber-500 font-mono font-bold">
+            </div>
+            <div>
+              <label class="block text-[11px] text-amber-900 mb-0.5 font-medium">实际完成日期</label>
+              <input type="date" id="formActualEnd" onchange="updateFormProgressPreview()" class="w-full px-2 py-1 text-xs bg-white border border-amber-300 text-slate-900 rounded-lg focus:outline-none focus:border-amber-500 font-mono font-bold">
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-[11px] text-amber-900 mb-1">
+              <span class="flex items-center gap-1 font-medium"><i class="fa-solid fa-calculator text-amber-600 text-[10px]"></i> 实际进度 (系统自动核算)</span>
+              <span id="formProgressLabel" class="font-bold font-mono text-amber-700">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="formProgressBar" class="h-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeTaskModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">
+            取消
+          </button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-brand-800 hover:bg-brand-700 text-white rounded-xl shadow-xs transition-all">
+            保存工序
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 删除二次确认弹窗 (Delete Modal) -->
+  <div id="deleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border border-rose-200 p-5 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center mx-auto text-xl shadow-xs">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div class="text-center">
+        <h4 class="text-sm font-bold text-slate-900">确认删除该工序？</h4>
+        <p id="deleteModalMsg" class="text-xs text-slate-500 mt-1">此操作不可恢复，工期与进度将重新核算。</p>
+      </div>
+      <div class="flex gap-2 pt-1">
+        <button type="button" id="btnCancelDelete" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors">
+          取消
+        </button>
+        <button type="button" id="btnConfirmDelete" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-xl transition-colors shadow-xs">
+          确认删除
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 项目标题快速重命名弹窗 (Project Title Modal) -->
+  <div id="titleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 p-5 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-brand-50 border border-brand-200 text-brand-700 flex items-center justify-center">
+            <i class="fa-solid fa-pen-nib text-xs"></i>
+          </div>
+          <span>编辑项目看板标题</span>
+        </h4>
+        <button id="btnCloseTitleModal" class="text-slate-400 hover:text-slate-700 text-base">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">输入新项目名称</label>
+        <input type="text" id="projectTitleInput" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:border-brand-500 focus:outline-none transition-all">
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button type="button" id="btnCancelTitleModal" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors">
+          取消
+        </button>
+        <button type="button" id="btnSaveTitleModal" class="flex-1 py-2 bg-brand-800 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-all shadow-xs">
+          保存标题
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 浮动通知提示 (Toast) -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2.5 bg-slate-900 text-white text-xs px-4 py-3 rounded-2xl shadow-xl border border-slate-800">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-cyan-400 text-sm"></i>
+    <span id="toastMsg" class="font-medium tracking-wide">操作已生效</span>
+  </div>
+
+  <script>
+    // Google Apps Script 专属接口地址与配置
+    const GAS_API_URL = "https://script.google.com/a/macros/rrd.com/s/AKfycbx9Tzd5MgEkcVloTwsXbrQ9BQ7D3bHI23jqW_fB1cRVpDmrDqkqFhvQ9I6ErCZIHA/exec";
+    let isCloudSyncing = false;
+    let cloudSyncDebounceTimer = null;
+
+    // 默认项目标题
+    const DEFAULT_PROJECT_TITLE = "和林HS01009L尺寸外观检测项目";
+    let projectTitle = localStorage.getItem('helin_project_title_v1') || DEFAULT_PROJECT_TITLE;
+
+    // 预置默认排程基准数据 (Plan Baseline)
+    const INITIAL_TASKS = [
+      { id: 1, gongxu: "业务", xuhao: 1, project: "签合同", module: "合同签订", planStart: "2026-10-08", planEnd: "2026-10-08", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 2, gongxu: "机构", xuhao: 1, project: "3D绘图", module: "标准件选型，模型细化。", planStart: "2026-10-08", planEnd: "2026-10-21", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 3, gongxu: "机构", xuhao: 2, project: "2D出图", module: "出图、核图。", planStart: "2026-10-22", planEnd: "2026-10-28", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 4, gongxu: "机构", xuhao: 3, project: "BOM", module: "整理BOM，下单。", planStart: "2026-10-29", planEnd: "2026-10-30", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 5, gongxu: "电控", xuhao: 1, project: "汇制电气图", module: "电气原理图、电气布线图", planStart: "2026-10-08", planEnd: "2026-10-12", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 6, gongxu: "电控", xuhao: 2, project: "规划实际布线方案", module: "电气走线", planStart: "2026-10-13", planEnd: "2026-10-13", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 7, gongxu: "电控", xuhao: 3, project: "编写电气IO表", module: "规划PLC点位", planStart: "2026-10-14", planEnd: "2026-10-14", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 8, gongxu: "电控", xuhao: 4, project: "规划程序框架", module: "程序模块、机械手交互、视觉交互", planStart: "2026-10-14", planEnd: "2026-10-19", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 9, gongxu: "电控", xuhao: 5, project: "编写PLC逻辑程序", module: "手动模块、自动模块、监视模块、交互模块、复位模块", planStart: "2026-10-20", planEnd: "2026-10-26", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 10, gongxu: "电控", xuhao: 6, project: "编写触摸屏程序", module: "人机交互", planStart: "2026-10-27", planEnd: "2026-10-30", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 11, gongxu: "电控", xuhao: 7, project: "电气设备安装", module: "电气元件布板、机台设备走线、元器件接线", planStart: "2026-12-02", planEnd: "2026-12-04", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 12, gongxu: "电控", xuhao: 8, project: "设备运行调试", module: "核对点位、调整位置、伺服运行测试、机械手交互测试、自动运行测试", planStart: "2026-12-05", planEnd: "2026-12-09", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 13, gongxu: "视觉", xuhao: 1, project: "视觉硬件调试", module: "3D相机部分调试、2D相机部分调试、光源调试", planStart: "2026-12-10", planEnd: "2026-12-14", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 14, gongxu: "视觉", xuhao: 2, project: "模型导入跑料验证", module: "视觉软件导入、缺陷样品收集训练、跑料验证", planStart: "2026-12-15", planEnd: "2027-01-03", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 15, gongxu: "采购", xuhao: 1, project: "标准件采购", module: "外购标准零部件采购与到料跟进", planStart: "2026-11-02", planEnd: "2026-11-16", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 16, gongxu: "采购", xuhao: 2, project: "加工件采购", module: "结构加工件外协与到料质检", planStart: "2026-11-02", planEnd: "2026-11-16", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 17, gongxu: "组装", xuhao: 1, project: "机构组装", module: "机械架体与机械组件现场组装", planStart: "2026-11-17", planEnd: "2026-12-01", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 18, gongxu: "组装", xuhao: 2, project: "电器组装", module: "电控配电箱与机台现场配线装配", planStart: "2026-11-27", planEnd: "2026-12-01", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 19, gongxu: "出货", xuhao: 1, project: "运输/现场安装", module: "设备位置安装摆放，通气通电", planStart: "2027-01-04", planEnd: "2027-01-05", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 20, gongxu: "现场调试", xuhao: 1, project: "设备调试", module: "根据客户产品微调/验证相关工位及程序", planStart: "2027-01-06", planEnd: "2027-01-08", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 21, gongxu: "量产验证", xuhao: 1, project: "试生产", module: "根据验收需要的产能测试设备相关，培训客户端操机人员等", planStart: "2027-01-11", planEnd: "2027-01-15", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 22, gongxu: "提交验收资料", xuhao: 1, project: "验收资料", module: "机构，电控，视觉提供相关验收文件电子档/纸档", planStart: "2027-01-18", planEnd: "2027-01-20", actualStart: "", actualEnd: "", actualProgress: 0 },
+      { id: 23, gongxu: "资料归档/结案", xuhao: 1, project: "结案/总结", module: "相关资料归档，复盘相关", planStart: "2027-01-21", planEnd: "2027-01-22", actualStart: "", actualEnd: "", actualProgress: 0 }
+    ];
+
+    // 全局响应式状态
+    let tasks = JSON.parse(localStorage.getItem('helin_project_plan_crud_v3')) || JSON.parse(JSON.stringify(INITIAL_TASKS));
+    let baseDate = new Date().toISOString().split('T')[0];
+    let currentView = 'table';
+    let autoSyncProgressWithDates = true;
+    let isGroupedView = true;
+    let pendingDeleteId = null;
+
+    // 标准工序部门流程生命周期次序
+    const DEPARTMENT_ORDER = [
+      "业务", "机构", "电控", "视觉", "采购", "组装", "出货", "现场调试", "量产验证", "提交验收资料", "资料归档/结案"
+    ];
+
+    function sortTasksList() {
+      tasks.sort((a, b) => {
+        const idxA = DEPARTMENT_ORDER.indexOf(a.gongxu);
+        const idxB = DEPARTMENT_ORDER.indexOf(b.gongxu);
+        const orderA = idxA === -1 ? 999 : idxA;
+        const orderB = idxB === -1 ? 999 : idxB;
+        if (orderA !== orderB) return orderA - orderB;
+        return (Number(a.xuhao) || 0) - (Number(b.xuhao) || 0);
+      });
+    }
+
+    function updateProjectTitleDisplay() {
+      document.getElementById('projectTitleDisplay').textContent = projectTitle;
+      document.title = `${projectTitle} - 工单实施进度看板`;
+    }
+
+    function diffDays(startStr, endStr) {
+      if (!startStr || !endStr) return 0;
+      const s = new Date(startStr + 'T00:00:00');
+      const e = new Date(endStr + 'T00:00:00');
+      const ms = e.getTime() - s.getTime();
+      return Math.round(ms / (24 * 3600 * 1000)) + 1;
+    }
+
+    // 从最早开始日期到最后完成日期的日历跨度计算（重叠工期只计算一次）
+    function calculateDateSpan(items, startKey, endKey, fallbackEnd = null) {
+      const validStarts = [];
+      const validEnds = [];
+
+      items.forEach(t => {
+        const s = t[startKey];
+        const e = t[endKey] || (fallbackEnd && s ? fallbackEnd : null);
+        if (s) validStarts.push(s);
+        if (e) validEnds.push(e);
+      });
+
+      if (validStarts.length === 0 || validEnds.length === 0) {
+        return { start: null, end: null, days: 0 };
+      }
+
+      validStarts.sort();
+      validEnds.sort();
+
+      const minStart = validStarts[0];
+      const maxEnd = validEnds[validEnds.length - 1];
+      const days = Math.max(1, diffDays(minStart, maxEnd));
+
+      return { start: minStart, end: maxEnd, days };
+    }
+
+    function computeTaskMetrics(t) {
+      const planDuration = Math.max(1, diffDays(t.planStart, t.planEnd));
+      let actualDuration = 0;
+
+      if (t.actualStart) {
+        const actualEndRef = t.actualEnd || baseDate;
+        actualDuration = Math.max(1, diffDays(t.actualStart, actualEndRef));
+      }
+
+      const durationVariance = actualDuration > 0 ? (actualDuration - planDuration) : 0;
+
+      let autoProgress = 0;
+      if (t.actualEnd) {
+        autoProgress = 100;
+      } else if (t.actualStart) {
+        const daysSpent = Math.max(1, diffDays(t.actualStart, baseDate));
+        autoProgress = Math.min(99, Math.max(5, Math.round((daysSpent / planDuration) * 100)));
+      } else {
+        autoProgress = 0;
+      }
+      t.actualProgress = autoProgress;
+
+      let status = "未开始";
+      let statusType = "gray";
+
+      if (t.actualProgress >= 100 || t.actualEnd) {
+        statusType = "green";
+        if (t.actualEnd && t.planEnd) {
+          if (t.actualEnd > t.planEnd) status = "逾期完成";
+          else if (t.actualEnd < t.planEnd) status = "提前完成";
+          else status = "按期完成";
+        } else {
+          status = "已完成";
+        }
+      } else if (baseDate > t.planEnd) {
+        status = "已逾期";
+        statusType = "red";
+      } else if (t.actualStart) {
+        status = "进行中";
+        statusType = "blue";
+      } else {
+        status = "未开始";
+        statusType = "gray";
+      }
+
+      return {
+        planDuration,
+        actualDuration,
+        durationVariance,
+        status,
+        statusType
+      };
+    }
+
+    function getGongxuBadgeClass(gx) {
+      const map = {
+        "业务": "bg-indigo-50 text-indigo-700 border-indigo-200 font-bold",
+        "机构": "bg-sky-50 text-sky-700 border-sky-200 font-bold",
+        "电控": "bg-cyan-50 text-cyan-800 border-cyan-200 font-bold",
+        "视觉": "bg-purple-50 text-purple-700 border-purple-200 font-bold",
+        "采购": "bg-amber-50 text-amber-800 border-amber-200 font-bold",
+        "组装": "bg-emerald-50 text-emerald-800 border-emerald-200 font-bold",
+        "出货": "bg-teal-50 text-teal-800 border-teal-200 font-bold",
+        "现场调试": "bg-blue-50 text-blue-700 border-blue-200 font-bold",
+        "量产验证": "bg-violet-50 text-violet-700 border-violet-200 font-bold",
+        "提交验收资料": "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 font-bold",
+        "资料归档/结案": "bg-slate-100 text-slate-700 border-slate-300 font-bold"
+      };
+      return map[gx] || "bg-slate-100 text-slate-700 border-slate-200 font-bold";
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function saveTasksToStorage(syncCloud = true) {
+      localStorage.setItem('helin_project_plan_crud_v3', JSON.stringify(tasks));
+      if (syncCloud) {
+        debouncePushToCloud();
+      }
+    }
+
+    function setCloudStatus(status, text) {
+      const dot = document.getElementById('cloudStatusDot');
+      const label = document.getElementById('cloudStatusText');
+      if (!dot || !label) return;
+
+      label.textContent = text;
+      if (status === 'syncing') {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+      } else if (status === 'success') {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+      } else if (status === 'error') {
+        dot.className = "w-2 h-2 rounded-full bg-rose-400";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+      }
+    }
+
+    function debouncePushToCloud() {
+      setCloudStatus('syncing', '正在同步云端...');
+      clearTimeout(cloudSyncDebounceTimer);
+      cloudSyncDebounceTimer = setTimeout(() => {
+        pushToCloud();
+      }, 1000);
+    }
+
+    async function pushToCloud() {
+      if (isCloudSyncing) return;
+      isCloudSyncing = true;
+      setCloudStatus('syncing', '正在推送变更...');
+
+      const payload = {
+        action: 'sync_all',
+        projectTitle: projectTitle,
+        updatedAt: new Date().toISOString(),
+        tasks: tasks
+      };
+
+      try {
+        const response = await fetch(GAS_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          setCloudStatus('success', '云端已同步');
+          showToast("已自动同步到 Google 云端数据库");
+        } else {
+          throw new Error(`HTTP ${response.status}`);
+        }
+      } catch (err) {
+        console.warn("推送至 Google 云端异常，已在本地暂存:", err);
+        setCloudStatus('error', '离线/暂存本地');
+        showToast("本地已保存，云端推送暂缓", "warn");
+      } finally {
+        isCloudSyncing = false;
+      }
+    }
+
+    async function fetchFromCloud(isManual = false) {
+      const fetchIcon = document.getElementById('cloudFetchIcon');
+      if (fetchIcon) fetchIcon.classList.add('fa-spin');
+      setCloudStatus('syncing', '正在拉取云端...');
+
+      try {
+        const response = await fetch(`${GAS_API_URL}?action=get_all&_t=${Date.now()}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const result = await response.json();
+        if (result && Array.isArray(result.tasks) && result.tasks.length > 0) {
+          tasks = result.tasks;
+          if (result.projectTitle) {
+            projectTitle = result.projectTitle;
+            localStorage.setItem('helin_project_title_v1', projectTitle);
+            updateProjectTitleDisplay();
+          }
+          sortTasksList();
+          saveTasksToStorage(false);
+          populateGongxuFilter();
+          refreshViews();
+          setCloudStatus('success', '云端已对齐');
+          if (isManual) showToast("已成功从 Google 云端拉取最新看板");
+        } else {
+          setCloudStatus('success', '云端就绪');
+          if (isManual) showToast("云端已是最新版本");
+        }
+      } catch (err) {
+        console.warn("从 Google Apps Script 拉取云端数据失败，使用本地缓存:", err);
+        setCloudStatus('error', '连接离线/仅本地');
+        if (isManual) showToast("拉取失败，请检查网络或授权", "error");
+      } finally {
+        if (fetchIcon) fetchIcon.classList.remove('fa-spin');
+      }
+    }
+
+    let toastTimeout = null;
+    function showToast(msg, type = "success") {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const text = document.getElementById('toastMsg');
+      
+      text.textContent = msg;
+      if (type === 'warn') {
+        icon.className = "fa-solid fa-triangle-exclamation text-amber-400 text-sm";
+      } else if (type === 'error') {
+        icon.className = "fa-solid fa-circle-exclamation text-rose-400 text-sm";
+      } else {
+        icon.className = "fa-solid fa-circle-check text-cyan-400 text-sm";
+      }
+
+      toast.classList.remove('opacity-0', 'translate-y-16');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-16');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+
+    function getFilteredTasks() {
+      const gxFilter = document.getElementById('gongxuFilter').value;
+      const sFilter = document.getElementById('statusFilter').value;
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      return tasks.filter(t => {
+        if (gxFilter !== 'ALL' && t.gongxu !== gxFilter) return false;
+        const m = computeTaskMetrics(t);
+        if (sFilter !== 'ALL' && !m.status.includes(sFilter)) return false;
+        if (search) {
+          const matchProject = (t.project || '').toLowerCase().includes(search);
+          const matchModule = (t.module || '').toLowerCase().includes(search);
+          const matchGx = (t.gongxu || '').toLowerCase().includes(search);
+          if (!matchProject && !matchModule && !matchGx) return false;
+        }
+        return true;
+      });
+    }
+
+    function populateGongxuFilter() {
+      const select = document.getElementById('gongxuFilter');
+      const curVal = select.value;
+      const gongxuSet = new Set();
+      tasks.forEach(t => { if (t.gongxu) gongxuSet.add(t.gongxu); });
+      
+      let html = '<option value="ALL">全部工序部门</option>';
+      gongxuSet.forEach(gx => {
+        html += `<option value="${escapeHtml(gx)}">${escapeHtml(gx)}</option>`;
+      });
+      select.innerHTML = html;
+      if (gongxuSet.has(curVal)) select.value = curVal;
+    }
+
+    function switchView(viewName) {
+      currentView = viewName;
+      ['table', 'gantt', 'pivot'].forEach(v => {
+        const btn = document.getElementById(`viewBtn${v.charAt(0).toUpperCase() + v.slice(1)}`);
+        const container = document.getElementById(`${v}ViewContainer`);
+        if (v === viewName) {
+          btn.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-900 text-white shadow-xs transition-all";
+          container.classList.remove('hidden');
+        } else {
+          btn.className = "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-brand-900 hover:bg-slate-200/70 transition-all";
+          container.classList.add('hidden');
+        }
+      });
+      refreshViews();
+    }
+
+    function toggleGrouping() {
+      isGroupedView = !isGroupedView;
+      const btn = document.getElementById('btnToggleGrouping');
+      const text = document.getElementById('groupingText');
+      if (isGroupedView) {
+        btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200/80 text-brand-900 transition-colors border border-slate-200";
+        text.textContent = "已按部门分组";
+      } else {
+        btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors border border-slate-200";
+        text.textContent = "平铺展示全部";
+      }
+      renderTable();
+    }
+
+    function updateKPIs() {
+      // 计划总工期：从所有工序中最早计划开始日期到最后计划完成日期的天数（重叠仅计一次）
+      const planSpan = calculateDateSpan(tasks, 'planStart', 'planEnd');
+      const totalPlanDays = planSpan.days;
+
+      // 实际总耗时：从已启动工序的最早实际开始日到最晚实际完成日/基准日（重叠仅计一次）
+      const actualSpan = calculateDateSpan(tasks, 'actualStart', 'actualEnd', baseDate);
+      const totalActualDays = actualSpan.days;
+
+      let ongoingCount = 0;
+      let completedCount = 0;
+      let overdueCount = 0;
+      let totalProgressSum = 0;
+
+      tasks.forEach(t => {
+        const m = computeTaskMetrics(t);
+        totalProgressSum += Number(t.actualProgress) || 0;
+
+        if (m.statusType === 'green') completedCount++;
+        else if (m.statusType === 'blue') ongoingCount++;
+        else if (m.statusType === 'red') overdueCount++;
+      });
+
+      const totalCount = tasks.length;
+      const overallAvgProgress = totalCount > 0 ? Math.round(totalProgressSum / totalCount) : 0;
+      const completedRate = totalCount > 0 ? ((completedCount / totalCount) * 100).toFixed(1) : "0.0";
+      const variance = totalActualDays > 0 ? (totalActualDays - totalPlanDays) : 0;
+
+      // 更新计划总工期卡片
+      document.getElementById('kpiPlanDuration').textContent = `${totalPlanDays} 天`;
+      const planDateRangeStr = planSpan.start && planSpan.end 
+        ? `${planSpan.start.slice(5)} ~ ${planSpan.end.slice(5)}` 
+        : '未排期';
+      document.getElementById('kpiTotalTasksText').innerHTML = `
+        <span class="truncate" title="排期跨度: ${planSpan.start || ''} 至 ${planSpan.end || ''}">
+          <i class="fa-regular fa-calendar-days text-cyan-600 mr-1"></i>${planDateRangeStr} (${totalCount}项)
+        </span>
+      `;
+
+      // 更新实际累计耗时卡片
+      document.getElementById('kpiActualDuration').textContent = `${totalActualDays} 天`;
+      const varEl = document.getElementById('kpiDurationVariance');
+      if (totalActualDays === 0) {
+        varEl.innerHTML = `<span class="text-slate-400 font-medium">尚未启动实施</span>`;
+      } else if (variance > 0) {
+        varEl.innerHTML = `<span class="text-rose-600 font-bold"><i class="fa-solid fa-arrow-trend-up"></i> 总体超期 +${variance}d</span>`;
+      } else if (variance < 0) {
+        varEl.innerHTML = `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-arrow-trend-down"></i> 较计划节省 ${Math.abs(variance)}d</span>`;
+      } else {
+        varEl.innerHTML = `<span class="text-slate-500 font-medium">总体与计划持平</span>`;
+      }
+
+      document.getElementById('kpiOngoingTasks').textContent = ongoingCount;
+      document.getElementById('kpiCompletedTasks').textContent = completedCount;
+      document.getElementById('kpiCompletedRate').textContent = `达成率 ${completedRate}%`;
+      document.getElementById('kpiOverdueTasks').textContent = overdueCount;
+      document.getElementById('kpiOverallProgress').textContent = `${overallAvgProgress}%`;
+      document.getElementById('kpiProgressBar').style.width = `${overallAvgProgress}%`;
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('taskTableBody');
+      const emptyState = document.getElementById('tableEmptyState');
+      const filtered = getFilteredTasks();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      let html = '';
+
+      if (isGroupedView) {
+        const grouped = {};
+        filtered.forEach(t => {
+          if (!grouped[t.gongxu]) grouped[t.gongxu] = [];
+          grouped[t.gongxu].push(t);
+        });
+
+        Object.keys(grouped).forEach(gx => {
+          const list = grouped[gx];
+          const badgeClass = getGongxuBadgeClass(gx);
+          
+          const deptPlanSpan = calculateDateSpan(list, 'planStart', 'planEnd');
+          const deptActualSpan = calculateDateSpan(list, 'actualStart', 'actualEnd', baseDate);
+          let groupCompletedCount = 0;
+
+          list.forEach(item => {
+            const m = computeTaskMetrics(item);
+            if (m.status.includes('完成')) groupCompletedCount++;
+          });
+
+          // 分组聚合标头行 (清爽白色背景，带精致微底纹与边框)
+          html += `
+            <tr class="bg-slate-50/90 border-y border-slate-200 font-black text-xs text-slate-800">
+              <td colspan="12" class="py-2.5 px-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <span class="px-2.5 py-1 rounded-lg border shadow-xs text-xs ${badgeClass}">
+                      <i class="fa-solid fa-microchip mr-1.5 opacity-80 text-brand-600"></i>${escapeHtml(gx)}
+                    </span>
+                    <span class="text-slate-600 font-bold text-xs">（共 ${list.length} 项工序任务）</span>
+                  </div>
+                  <div class="flex items-center gap-4 text-slate-600 font-bold font-mono text-xs">
+                    <span title="排期区间: ${deptPlanSpan.start || ''} ~ ${deptPlanSpan.end || ''}">计划跨度: <b class="text-brand-700 font-mono text-sm">${deptPlanSpan.days}d</b></span>
+                    <span>实际跨度: <b class="text-indigo-700 font-mono text-sm">${deptActualSpan.days}d</b></span>
+                    <span>阶段达成: <b class="text-emerald-600 font-mono text-sm">${((groupCompletedCount / list.length) * 100).toFixed(0)}%</b></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          `;
+
+          list.forEach((task, index) => {
+            html += generateTableRowHtml(task, index);
+          });
+        });
+
+      } else {
+        filtered.forEach((task, index) => {
+          html += generateTableRowHtml(task, index);
+        });
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    function generateTableRowHtml(task, index) {
+      const m = computeTaskMetrics(task);
+      const isZebra = index % 2 === 1 ? 'bg-slate-50/60' : 'bg-white';
+      const badgeClass = getGongxuBadgeClass(task.gongxu);
+
+      let statusBadge = "bg-slate-100 text-slate-600 border-slate-200";
+      let dotColor = "bg-slate-400";
+      if (m.statusType === 'green') {
+        statusBadge = "bg-emerald-50 text-emerald-700 border-emerald-300 font-bold shadow-xs";
+        dotColor = "bg-emerald-500 shadow-xs";
+      } else if (m.statusType === 'blue') {
+        statusBadge = "bg-sky-50 text-sky-700 border-sky-300 font-bold shadow-xs";
+        dotColor = "bg-sky-500 animate-pulse shadow-xs";
+      } else if (m.statusType === 'red') {
+        statusBadge = "bg-rose-50 text-rose-700 border-rose-300 font-bold ring-1 ring-rose-200 shadow-xs";
+        dotColor = "bg-rose-500 shadow-xs";
+      }
+
+      let varBadge = `<span class="text-slate-400 font-mono text-[10px] font-bold">0</span>`;
+      if (m.durationVariance > 0) {
+        varBadge = `<span class="inline-flex items-center text-rose-700 font-black bg-rose-50 px-1 py-0.5 rounded border border-rose-200 text-[10px] font-mono">+${m.durationVariance}d</span>`;
+      } else if (m.durationVariance < 0 && task.actualEnd) {
+        varBadge = `<span class="inline-flex items-center text-emerald-700 font-black bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200 text-[10px] font-mono">${m.durationVariance}d</span>`;
+      }
+
+      return `
+        <tr class="${isZebra} hover:bg-brand-50/50 transition-colors divide-x divide-slate-100 text-xs group">
+          
+          <!-- 工序 / 序号 复合徽章 -->
+          <td class="py-2 px-1 text-center font-black">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border shadow-xs ${badgeClass} text-xs">
+              <span>${escapeHtml(task.gongxu)}</span>
+              <span class="opacity-80 font-mono text-[10px]">#${task.xuhao}</span>
+            </span>
+          </td>
+
+          <!-- 项目分解与细则说明 -->
+          <td class="py-2 px-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight truncate leading-tight group-hover:text-brand-700 transition-colors" title="${escapeHtml(task.project)}">
+                ${escapeHtml(task.project)}
+              </span>
+              <button onclick="openEditTaskModal(${task.id})" title="快速编辑" class="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-brand-600 p-0.5 transition-opacity">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+            </div>
+            <div class="text-slate-500 text-[10px] sm:text-[11px] font-medium truncate max-w-full mt-0.5" title="${escapeHtml(task.module || '')}">
+              ${escapeHtml(task.module || '—')}
+            </div>
+          </td>
+          
+          <!-- 计划开始 -->
+          <td class="py-1 px-0.5 text-center bg-sky-50/30">
+            <input type="date" value="${task.planStart}" 
+              onchange="handlePlanStartChange(${task.id}, this.value)"
+              class="w-full text-center compact-date-input bg-transparent hover:bg-white border border-transparent hover:border-slate-200 focus:border-brand-500 focus:bg-white focus:outline-none rounded font-mono font-bold text-slate-700 cursor-pointer"
+              title="计划开始日">
+          </td>
+          <!-- 计划完成 -->
+          <td class="py-1 px-0.5 text-center bg-sky-50/30">
+            <input type="date" value="${task.planEnd}" 
+              onchange="handlePlanEndChange(${task.id}, this.value)"
+              class="w-full text-center compact-date-input bg-transparent hover:bg-white border border-transparent hover:border-slate-200 focus:border-brand-500 focus:bg-white focus:outline-none rounded font-mono font-bold text-slate-700 cursor-pointer"
+              title="计划完成日">
+          </td>
+          <!-- 计划工期 -->
+          <td class="py-1 px-0.5 text-center bg-sky-50/30 font-black font-mono text-brand-700 text-xs">${m.planDuration}d</td>
+
+          <!-- 实际开始 -->
+          <td class="py-1 px-0.5 text-center bg-amber-50/20 group-hover:bg-amber-50/40 transition-colors">
+            <input type="date" value="${task.actualStart || ''}" 
+              onchange="handleActualStartChange(${task.id}, this.value)"
+              class="w-full text-center compact-date-input font-mono font-bold text-slate-800 bg-white border border-amber-300 rounded px-0.5 focus:border-amber-500 focus:outline-none shadow-xs cursor-pointer">
+          </td>
+          <!-- 实际完成 -->
+          <td class="py-1 px-0.5 text-center bg-amber-50/20 group-hover:bg-amber-50/40 transition-colors">
+            <input type="date" value="${task.actualEnd || ''}" 
+              onchange="handleActualEndChange(${task.id}, this.value)"
+              class="w-full text-center compact-date-input font-mono font-bold text-slate-800 bg-white border border-amber-300 rounded px-0.5 focus:border-amber-500 focus:outline-none shadow-xs cursor-pointer">
+          </td>
+
+          <!-- 实际耗时 -->
+          <td class="py-1 px-0.5 text-center font-mono font-black text-xs ${m.actualDuration > 0 ? 'text-indigo-700' : 'text-slate-400'}">
+            ${m.actualDuration > 0 ? m.actualDuration + 'd' : '—'}
+          </td>
+          <!-- 工期偏差 -->
+          <td class="py-1 px-0.5 text-center">${varBadge}</td>
+
+          <!-- 实际进度条 -->
+          <td class="py-1 px-1 bg-amber-50/20">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="font-mono font-black text-amber-700 text-xs">${task.actualProgress}%</span>
+              <button onclick="handleQuickDone(${task.id})" title="一键标记完工 (自动置为100%)" 
+                class="text-[10px] text-slate-600 hover:text-emerald-700 px-1.5 py-0.5 rounded bg-white border border-slate-200 shadow-xs hover:bg-emerald-50 transition-all flex items-center gap-0.5">
+                <i class="fa-solid fa-check text-[9px] text-emerald-600"></i>
+                <span class="text-[9px] font-semibold">完工</span>
+              </button>
+            </div>
+            <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+              <div class="h-1.5 rounded-full transition-all duration-300 ${task.actualProgress >= 100 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : (m.statusType === 'red' ? 'bg-rose-500' : 'bg-gradient-to-r from-amber-400 to-amber-500')}" 
+                style="width: ${task.actualProgress}%"></div>
+            </div>
+          </td>
+
+          <!-- 状态 (醒目标签) -->
+          <td class="py-1 px-0.5 text-center">
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs border ${statusBadge} whitespace-nowrap">
+              <span class="w-1.5 h-1.5 rounded-full ${dotColor} mr-1"></span>
+              ${m.status}
+            </span>
+          </td>
+
+          <!-- 操作栏 -->
+          <td class="py-1 px-0.5 text-center">
+            <div class="flex items-center justify-center gap-1">
+              <button onclick="openEditTaskModal(${task.id})" title="编辑工序" 
+                class="p-1 rounded text-slate-400 hover:text-brand-600 hover:bg-slate-100 transition-colors">
+                <i class="fa-regular fa-pen-to-square text-xs"></i>
+              </button>
+              <button onclick="requestDeleteTask(${task.id})" title="删除工序" 
+                class="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-slate-100 transition-colors">
+                <i class="fa-regular fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderGantt() {
+      const container = document.getElementById('ganttBarsContainer');
+      const axis = document.getElementById('ganttTimeAxis');
+      const filtered = getFilteredTasks();
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="py-12 text-center text-slate-400 text-xs">暂无符合条件的甘特图条目</div>';
+        axis.innerHTML = '';
+        return;
+      }
+
+      let minTimestamp = Infinity;
+      let maxTimestamp = -Infinity;
+
+      tasks.forEach(t => {
+        const pS = new Date(t.planStart + 'T00:00:00').getTime();
+        const pE = new Date(t.planEnd + 'T00:00:00').getTime();
+        if (pS < minTimestamp) minTimestamp = pS;
+        if (pE > maxTimestamp) maxTimestamp = pE;
+
+        if (t.actualStart) {
+          const aS = new Date(t.actualStart + 'T00:00:00').getTime();
+          if (aS < minTimestamp) minTimestamp = aS;
+        }
+        if (t.actualEnd) {
+          const aE = new Date(t.actualEnd + 'T00:00:00').getTime();
+          if (aE > maxTimestamp) maxTimestamp = aE;
+        }
+      });
+
+      minTimestamp -= 2 * 24 * 3600 * 1000;
+      maxTimestamp += 4 * 24 * 3600 * 1000;
+      const totalSpanDays = Math.max(1, Math.round((maxTimestamp - minTimestamp) / (24 * 3600 * 1000)));
+
+      let axisHtml = '<div class="w-36 sm:w-44 flex-shrink-0 text-brand-900 pl-2 font-mono font-bold">工序 / 作业细分</div><div class="flex-1 flex relative h-5">';
+      const stepDays = 7;
+      for (let day = 0; day <= totalSpanDays; day += stepDays) {
+        const tickDate = new Date(minTimestamp + day * 24 * 3600 * 1000);
+        const label = `${tickDate.getMonth() + 1}/${tickDate.getDate()}`;
+        const leftPercent = (day / totalSpanDays) * 100;
+        axisHtml += `
+          <div class="absolute transform -translate-x-1/2 flex flex-col items-center" style="left: ${leftPercent}%">
+            <span class="text-slate-400 font-mono text-[9px] font-semibold">${label}</span>
+            <span class="w-px h-1 bg-slate-300 mt-0.5"></span>
+          </div>
+        `;
+      }
+      axisHtml += '</div>';
+      axis.innerHTML = axisHtml;
+
+      const curTimestamp = new Date(baseDate + 'T00:00:00').getTime();
+      let todayLineHtml = '';
+      if (curTimestamp >= minTimestamp && curTimestamp <= maxTimestamp) {
+        const todayPercent = ((curTimestamp - minTimestamp) / (maxTimestamp - minTimestamp)) * 100;
+        todayLineHtml = `
+          <div class="absolute top-0 bottom-0 z-20 pointer-events-none" style="left: calc(9rem + (100% - 9rem) * ${todayPercent / 100})">
+            <div class="w-px h-full bg-rose-500 border-l border-rose-500 border-dashed relative">
+              <span class="absolute -top-5 -left-5 bg-rose-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-xs">
+                基准
+              </span>
+            </div>
+          </div>
+        `;
+      }
+
+      let barsHtml = todayLineHtml;
+      filtered.forEach(task => {
+        const m = computeTaskMetrics(task);
+        const pSTime = new Date(task.planStart + 'T00:00:00').getTime();
+        const pETime = new Date(task.planEnd + 'T00:00:00').getTime();
+        const pLeft = Math.max(0, ((pSTime - minTimestamp) / (maxTimestamp - minTimestamp)) * 100);
+        const pWidth = Math.max(1, ((pETime - pSTime + 24 * 3600 * 1000) / (maxTimestamp - minTimestamp)) * 100);
+
+        let actualTrackHtml = '';
+        if (task.actualStart) {
+          const aSTime = new Date(task.actualStart + 'T00:00:00').getTime();
+          let aETime = task.actualEnd ? new Date(task.actualEnd + 'T00:00:00').getTime() : curTimestamp;
+          if (aETime < aSTime) aETime = aSTime;
+
+          const aLeft = Math.max(0, ((aSTime - minTimestamp) / (maxTimestamp - minTimestamp)) * 100);
+          const aWidth = Math.max(1.5, ((aETime - aSTime + 24 * 3600 * 1000) / (maxTimestamp - minTimestamp)) * 100);
+
+          let aColor = 'bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-xs';
+          if (task.actualProgress >= 100) aColor = 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-xs';
+          else if (m.statusType === 'red') aColor = 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-xs';
+          else if (m.statusType === 'blue') aColor = 'bg-gradient-to-r from-sky-400 to-cyan-500 text-white shadow-xs';
+
+          actualTrackHtml = `
+            <div class="absolute top-3.5 h-2.5 rounded ${aColor} flex items-center justify-between px-1 font-black text-[8px]"
+              style="left: ${aLeft}%; width: ${aWidth}%;"
+              title="实际进展: ${task.actualStart} ~ ${task.actualEnd || '进行中'} (${m.actualDuration}天, ${task.actualProgress}%)">
+              <span class="truncate font-mono">${task.actualProgress}%</span>
+              <span class="text-[7px] opacity-90 font-mono">${m.actualDuration}d</span>
+            </div>
+          `;
+        } else {
+          actualTrackHtml = `
+            <div class="absolute top-3.5 h-2.5 rounded bg-slate-200 text-slate-500 border border-slate-300 flex items-center px-1 text-[8px] font-medium"
+              style="left: ${pLeft}%; width: 38px;">
+              <span>未启</span>
+            </div>
+          `;
+        }
+
+        barsHtml += `
+          <div class="flex items-center text-xs group hover:bg-slate-50 py-0.5 px-0.5 rounded-lg transition-colors">
+            <div class="w-36 sm:w-44 flex-shrink-0 pr-2 truncate flex items-center gap-1" title="${task.gongxu} - ${task.project}">
+              <span class="px-1 py-0.2 rounded text-[9px] font-bold bg-slate-100 text-slate-700 border border-slate-300 font-mono">#${task.xuhao}</span>
+              <span class="font-semibold text-slate-900 truncate text-[10px] group-hover:text-brand-700 transition-colors">${escapeHtml(task.project)}</span>
+            </div>
+            <div class="flex-1 relative h-7 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+              <!-- 计划基准线 (上轨) -->
+              <div class="absolute top-1 h-1.5 rounded bg-slate-400 shadow-xs"
+                style="left: ${pLeft}%; width: ${pWidth}%;" 
+                title="计划基准: ${task.planStart} ~ ${task.planEnd} (${m.planDuration}天)"></div>
+              <!-- 实际进展条 (下轨) -->
+              ${actualTrackHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = barsHtml;
+    }
+
+    function renderPivot() {
+      const tbody = document.getElementById('pivotTableBody');
+      const deptMap = {};
+
+      tasks.forEach(t => {
+        if (!deptMap[t.gongxu]) {
+          deptMap[t.gongxu] = {
+            tasks: [],
+            count: 0,
+            progressSum: 0,
+            completedCount: 0,
+            overdueCount: 0
+          };
+        }
+        const d = deptMap[t.gongxu];
+        const m = computeTaskMetrics(t);
+        d.tasks.push(t);
+        d.count++;
+        d.progressSum += Number(t.actualProgress) || 0;
+        if (m.statusType === 'green') d.completedCount++;
+        if (m.statusType === 'red') d.overdueCount++;
+      });
+
+      let html = '';
+      Object.keys(deptMap).forEach(deptName => {
+        const d = deptMap[deptName];
+        // 部门工期去重：从部门最早开始到最晚完成的天数
+        const planSpan = calculateDateSpan(d.tasks, 'planStart', 'planEnd');
+        const actualSpan = calculateDateSpan(d.tasks, 'actualStart', 'actualEnd', baseDate);
+
+        const avgProgress = Math.round(d.progressSum / d.count);
+        const variance = actualSpan.days > 0 ? (actualSpan.days - planSpan.days) : 0;
+        const badgeClass = getGongxuBadgeClass(deptName);
+
+        let varHtml = `<span class="text-slate-500 font-mono">0d</span>`;
+        if (actualSpan.days === 0) {
+          varHtml = `<span class="text-slate-400 font-mono text-[10px]">未启动</span>`;
+        } else if (variance > 0) {
+          varHtml = `<span class="text-rose-700 font-bold font-mono bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">+${variance}d (超期)</span>`;
+        } else if (variance < 0) {
+          varHtml = `<span class="text-emerald-700 font-bold font-mono bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">${variance}d (结余)</span>`;
+        }
+
+        let healthTag = `<span class="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">健康受控</span>`;
+        if (d.overdueCount > 0) {
+          healthTag = `<span class="text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">${d.overdueCount}项逾期</span>`;
+        } else if (avgProgress > 0 && avgProgress < 100) {
+          healthTag = `<span class="text-sky-700 font-semibold bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">推进中</span>`;
+        }
+
+        html += `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-2.5 px-3 font-bold">
+              <span class="px-2 py-0.5 rounded border text-[10px] ${badgeClass}">
+                ${escapeHtml(deptName)}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-center font-mono font-medium text-slate-700">${d.count}</td>
+            <td class="py-2.5 px-3 text-center font-mono text-brand-700 font-semibold" title="排期区间: ${planSpan.start || ''} ~ ${planSpan.end || ''}">${planSpan.days}天</td>
+            <td class="py-2.5 px-3 text-center font-mono text-indigo-700 font-semibold">${actualSpan.days}天</td>
+            <td class="py-2.5 px-3 text-center">${varHtml}</td>
+            <td class="py-2.5 px-3 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <div class="w-16 bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                  <div class="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" style="width: ${avgProgress}%"></div>
+                </div>
+                <span class="font-mono font-bold text-slate-900">${avgProgress}%</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-3 text-center">${healthTag}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function refreshViews() {
+      updateKPIs();
+      if (currentView === 'table') renderTable();
+      else if (currentView === 'gantt') renderGantt();
+      else if (currentView === 'pivot') renderPivot();
+    }
+
+    function handlePlanStartChange(id, newStart) {
+      const task = tasks.find(t => t.id === id);
+      if (!task || !newStart) return;
+      task.planStart = newStart;
+      if (task.planEnd && task.planStart > task.planEnd) {
+        task.planEnd = task.planStart;
+      }
+      saveTasksToStorage();
+      refreshViews();
+      showToast("计划开始日期已更新");
+    }
+
+    function handlePlanEndChange(id, newEnd) {
+      const task = tasks.find(t => t.id === id);
+      if (!task || !newEnd) return;
+      task.planEnd = newEnd;
+      if (task.planStart && task.planEnd < task.planStart) {
+        task.planStart = task.planEnd;
+      }
+      saveTasksToStorage();
+      refreshViews();
+      showToast("计划完成日期已更新");
+    }
+
+    function handleActualStartChange(id, newActualStart) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      task.actualStart = newActualStart;
+      saveTasksToStorage();
+      refreshViews();
+      showToast("实际开始日期已记录，进度已自动推算");
+    }
+
+    function handleActualEndChange(id, newActualEnd) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      task.actualEnd = newActualEnd;
+      if (task.actualEnd && !task.actualStart) {
+        task.actualStart = task.planStart || task.actualEnd;
+      }
+      saveTasksToStorage();
+      refreshViews();
+      showToast(task.actualEnd ? "已录入完工日期，进度自动置为100%" : "完工日期已重置");
+    }
+
+    function handleQuickDone(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      if (!task.actualStart) task.actualStart = task.planStart || baseDate;
+      task.actualEnd = baseDate;
+      saveTasksToStorage();
+      refreshViews();
+      showToast(`工序【${task.project}】已标记完工`);
+    }
+
+    function updateFormProgressPreview() {
+      const aStart = document.getElementById('formActualStart').value;
+      const aEnd = document.getElementById('formActualEnd').value;
+      const pStart = document.getElementById('formPlanStart').value;
+      const pEnd = document.getElementById('formPlanEnd').value;
+      const pDuration = Math.max(1, diffDays(pStart, pEnd));
+
+      let progress = 0;
+      if (aEnd) {
+        progress = 100;
+      } else if (aStart) {
+        const days = Math.max(1, diffDays(aStart, baseDate));
+        progress = Math.min(99, Math.max(5, Math.round((days / pDuration) * 100)));
+      } else {
+        progress = 0;
+      }
+
+      const label = document.getElementById('formProgressLabel');
+      const bar = document.getElementById('formProgressBar');
+      if (label) label.textContent = progress + '%';
+      if (bar) bar.style.width = progress + '%';
+    }
+
+    const taskModal = document.getElementById('taskModal');
+    const deleteModal = document.getElementById('deleteModal');
+    const titleModal = document.getElementById('titleModal');
+
+    function handleFormGongxuChange() {
+      const currentGongxu = document.getElementById('formGongxu').value.trim();
+      if (!currentGongxu) return;
+      const sameDeptTasks = tasks.filter(t => t.gongxu === currentGongxu);
+      const nextXuhao = sameDeptTasks.length > 0 ? Math.max(...sameDeptTasks.map(t => Number(t.xuhao) || 0)) + 1 : 1;
+      document.getElementById('formXuhao').value = nextXuhao;
+    }
+
+    function openAddTaskModal() {
+      document.getElementById('taskModalTitle').textContent = "新增工序任务";
+      document.getElementById('taskModalIcon').className = "fa-solid fa-plus text-sm";
+      document.getElementById('formTaskId').value = "";
+      document.getElementById('formGongxu').value = "机构";
+      
+      handleFormGongxuChange();
+
+      document.getElementById('formProject').value = "";
+      document.getElementById('formModule').value = "";
+      document.getElementById('formPlanStart').value = baseDate;
+      document.getElementById('formPlanEnd').value = baseDate;
+      document.getElementById('formActualStart').value = "";
+      document.getElementById('formActualEnd').value = "";
+      updateFormProgressPreview();
+
+      taskModal.classList.remove('hidden');
+    }
+
+    function openEditTaskModal(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      document.getElementById('taskModalTitle').textContent = `编辑工序 #${task.xuhao} - ${task.project}`;
+      document.getElementById('taskModalIcon').className = "fa-regular fa-pen-to-square text-sm";
+      document.getElementById('formTaskId').value = task.id;
+      document.getElementById('formGongxu').value = task.gongxu;
+      document.getElementById('formXuhao').value = task.xuhao;
+      document.getElementById('formProject').value = task.project;
+      document.getElementById('formModule').value = task.module || "";
+      document.getElementById('formPlanStart').value = task.planStart;
+      document.getElementById('formPlanEnd').value = task.planEnd;
+      document.getElementById('formActualStart').value = task.actualStart || "";
+      document.getElementById('formActualEnd').value = task.actualEnd || "";
+      updateFormProgressPreview();
+
+      taskModal.classList.remove('hidden');
+    }
+
+    function closeTaskModal() {
+      taskModal.classList.add('hidden');
+    }
+
+    function handleTaskFormSubmit(e) {
+      e.preventDefault();
+      const idVal = document.getElementById('formTaskId').value;
+      const gongxu = document.getElementById('formGongxu').value.trim();
+      const xuhao = parseInt(document.getElementById('formXuhao').value, 10) || 1;
+      const project = document.getElementById('formProject').value.trim();
+      const moduleVal = document.getElementById('formModule').value.trim();
+      const planStart = document.getElementById('formPlanStart').value;
+      const planEnd = document.getElementById('formPlanEnd').value;
+      const actualStart = document.getElementById('formActualStart').value;
+      const actualEnd = document.getElementById('formActualEnd').value;
+
+      if (!gongxu || !project || !planStart || !planEnd) {
+        showToast("请完整填写必填字段", "warn");
+        return;
+      }
+
+      if (idVal) {
+        const id = parseInt(idVal, 10);
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          task.gongxu = gongxu;
+          task.xuhao = xuhao;
+          task.project = project;
+          task.module = moduleVal;
+          task.planStart = planStart;
+          task.planEnd = planEnd;
+          task.actualStart = actualStart;
+          task.actualEnd = actualEnd;
+        }
+        showToast("工序信息已成功更新");
+      } else {
+        const newId = tasks.length > 0 ? Math.max(...tasks.map(t => Number(t.id) || 0)) + 1 : 1;
+        tasks.push({
+          id: newId,
+          gongxu,
+          xuhao,
+          project,
+          module: moduleVal,
+          planStart,
+          planEnd,
+          actualStart,
+          actualEnd,
+          actualProgress: 0
+        });
+        showToast("新增工序成功，已自动归纳并排序");
+      }
+
+      sortTasksList();
+      saveTasksToStorage();
+      populateGongxuFilter();
+      closeTaskModal();
+      refreshViews();
+    }
+
+    document.getElementById('formGongxu').addEventListener('input', handleFormGongxuChange);
+    document.getElementById('formGongxu').addEventListener('change', handleFormGongxuChange);
+
+    function requestDeleteTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      pendingDeleteId = id;
+      document.getElementById('deleteModalMsg').textContent = `即将删除【${task.gongxu} - #${task.xuhao} ${task.project}】，工期和统计将重新计算。`;
+      deleteModal.classList.remove('hidden');
+    }
+
+    document.getElementById('btnCancelDelete').addEventListener('click', () => {
+      deleteModal.classList.add('hidden');
+      pendingDeleteId = null;
+    });
+
+    document.getElementById('btnConfirmDelete').addEventListener('click', () => {
+      if (!pendingDeleteId) return;
+      tasks = tasks.filter(t => t.id !== pendingDeleteId);
+      saveTasksToStorage();
+      populateGongxuFilter();
+      deleteModal.classList.add('hidden');
+      pendingDeleteId = null;
+      refreshViews();
+      showToast("工序已成功删除");
+    });
+
+    const projectTitleInput = document.getElementById('projectTitleInput');
+    document.getElementById('btnOpenTitleModal').addEventListener('click', () => {
+      projectTitleInput.value = projectTitle;
+      titleModal.classList.remove('hidden');
+      setTimeout(() => projectTitleInput.focus(), 50);
+    });
+
+    const closeTitleModal = () => titleModal.classList.add('hidden');
+    document.getElementById('btnCloseTitleModal').addEventListener('click', closeTitleModal);
+    document.getElementById('btnCancelTitleModal').addEventListener('click', closeTitleModal);
+
+    document.getElementById('btnSaveTitleModal').addEventListener('click', () => {
+      const val = projectTitleInput.value.trim();
+      if (!val) {
+        showToast("项目标题不能为空", "warn");
+        return;
+      }
+      projectTitle = val;
+      localStorage.setItem('helin_project_title_v1', projectTitle);
+      updateProjectTitleDisplay();
+      closeTitleModal();
+      showToast("项目标题已更新并保存");
+    });
+
+    projectTitleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('btnSaveTitleModal').click();
+      }
+    });
+
+    const baseDateInput = document.getElementById('baseDateInput');
+    baseDateInput.value = baseDate;
+    baseDateInput.addEventListener('change', (e) => {
+      if (!e.target.value) return;
+      baseDate = e.target.value;
+      refreshViews();
+      showToast(`基准日期已调整为: ${baseDate}`);
+    });
+
+    document.getElementById('btnResetToday').addEventListener('click', () => {
+      baseDate = new Date().toISOString().split('T')[0];
+      baseDateInput.value = baseDate;
+      refreshViews();
+      showToast("已切换回今日实时基准");
+    });
+
+    document.getElementById('btnToggleSync').addEventListener('click', () => {
+      autoSyncProgressWithDates = !autoSyncProgressWithDates;
+      const icon = document.getElementById('syncIcon');
+      const text = document.getElementById('syncText');
+      const btn = document.getElementById('btnToggleSync');
+      if (autoSyncProgressWithDates) {
+        icon.classList.add('animate-spin');
+        text.textContent = "日期-进度已联动";
+        btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-900 transition-all";
+        showToast("已开启实际日期与进度智能联动");
+      } else {
+        icon.classList.remove('animate-spin');
+        text.textContent = "已暂停自动联动";
+        btn.className = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-800 transition-all shadow-xs";
+        showToast("已切换为手动精细调控模式", "warn");
+      }
+    });
+
+    document.getElementById('btnExport').addEventListener('click', () => {
+      let csvContent = `\uFEFF项目名称,"${projectTitle.replace(/"/g, '""')}"\n`;
+      csvContent += "所属工序,序号,项目分解,作业细则,计划开始,计划完成,计划工期(天),实际开始,实际完成,实际耗时(天),工期偏差(天),实际进度,执行状态\n";
+      tasks.forEach(t => {
+        const m = computeTaskMetrics(t);
+        const row = [
+          `"${t.gongxu}"`,
+          t.xuhao,
+          `"${t.project}"`,
+          `"${(t.module || '').replace(/"/g, '""')}"`,
+          t.planStart,
+          t.planEnd,
+          m.planDuration,
+          t.actualStart || "未启动",
+          t.actualEnd || "进行中",
+          m.actualDuration,
+          m.durationVariance,
+          `${t.actualProgress}%`,
+          `"${m.status}"`
+        ];
+        csvContent += row.join(",") + "\n";
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${projectTitle}_实施进度报表_${baseDate}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("执行透视报表已导出为 CSV 文件");
+    });
+
+    document.getElementById('btnResetData').addEventListener('click', () => {
+      tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+      localStorage.removeItem('helin_project_plan_crud_v3');
+      populateGongxuFilter();
+      refreshViews();
+      showToast("已恢复默认预置排程方案");
+    });
+
+    // 初始化运行与启动定时拉取
+    sortTasksList();
+    updateProjectTitleDisplay();
+    populateGongxuFilter();
+    refreshViews();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchFromCloud(false);
+      setInterval(() => {
+        if (!isCloudSyncing && document.getElementById('taskModal').classList.contains('hidden')) {
+          fetchFromCloud(false);
+        }
+      }, 60000);
+    });
+  </script>
+</body>
+</html>
